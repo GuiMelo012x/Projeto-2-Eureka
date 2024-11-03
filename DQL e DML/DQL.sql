@@ -1,72 +1,76 @@
--- Pergunta 1
-SELECT SUM(Inscricao.Valor) AS TotalArrecadado
-FROM Inscricao
-WHERE Inscricao.Status = 'Realizado';
+-- Pergunta 1:
+-- Qual o total arrecadado com as inscrições dos eventos realizados?
+SELECT COUNT(*) * 50 AS Total_Arrecadado
+FROM Inscricao 
+WHERE Status = 'Confirmada';
 
+-- Pergunta 2:
+-- Quantas consultas foram realizadas por cada médico durante o evento?
+SELECT m.ID_Medico, COUNT(c.ID_Consulta) AS Total_Consultas
+FROM Medico m
+LEFT JOIN Consulta c ON m.ID_Medico = c.ID_Medico
+GROUP BY m.ID_Medico;
 
--- Pergunta 2
-SELECT Medico.ID_Medico, Pessoa.Nome, COUNT(Consulta.ID_Consulta) AS TotalConsultas
-FROM Consulta
-JOIN Medico ON Consulta.ID_Medico = Medico.ID_Medico
-JOIN Pessoa ON Medico.ID_Pessoa = Pessoa.ID_Pessoa
-GROUP BY Medico.ID_Medico, Pessoa.Nome
-ORDER BY TotalConsultas DESC;
-
-
--- Pergunta 3
-SELECT Pedido.Hora, COUNT(Pedido.ID_Pedido) AS TotalPedidos
+-- Pergunta 3:
+-- Qual é o horário de maior movimento de pedidos no restaurante?
+SELECT Hora, COUNT(*) AS Total_Pedidos
 FROM Pedido
-GROUP BY Pedido.Hora
-ORDER BY TotalPedidos DESC
-LIMIT 1;
+GROUP BY Hora;
 
+-- Pergunta 4:
+-- Quais funcionários trabalharam na recepção durante o evento e em quais turnos?
+SELECT f.ID_Funcionario, f.Turno, r.Nome_recepcionista
+FROM Funcionario f
+JOIN Recepcao r ON f.ID_Funcionario = r.ID_Funcionario;
 
--- Pergunta 4
-SELECT Funcionario.ID_Funcionario, Pessoa.Nome, Recepcao.Turno
-FROM Recepcao
-JOIN Funcionario ON Recepcao.ID_Funcionario = Funcionario.ID_Funcionario
-JOIN Pessoa ON Funcionario.ID_Pessoa = Pessoa.ID_Pessoa;
-
-
--- Pergunta 5
-SELECT Mesa.Status, COUNT(Mesa.ID_Mesa) AS QuantidadeMesas
+-- Pergunta 5:
+-- Quantas mesas foram ocupadas e reservadas ao longo do evento?
+SELECT Status, COUNT(*) AS Total_Mesas
 FROM Mesa
-WHERE Mesa.Status IN ('Ocupada', 'Reservada')
-GROUP BY Mesa.Status;
+WHERE Status IN ('Ocupada', 'Reservada')
+GROUP BY Status;
 
+-- Pergunta 6:
+-- Quantos pacientes participaram do evento e quais especialidades médicas foram mais procuradas?
+SELECT COUNT(DISTINCT p.ID_Paciente) AS Total_Pacientes, 
+       m.Especializacao
+FROM Paciente p
+JOIN Consulta c ON p.ID_Paciente = c.ID_Paciente
+JOIN Medico m ON c.ID_Medico = m.ID_Medico
+GROUP BY m.Especializacao;
 
--- Pergunta 6
-SELECT COUNT(DISTINCT Consulta.ID_Paciente) AS TotalPacientes, Medico.Especializacao, COUNT(Consulta.ID_Consulta) AS TotalConsultas
-FROM Consulta
-JOIN Medico ON Consulta.ID_Medico = Medico.ID_Medico
-GROUP BY Medico.Especializacao
-ORDER BY TotalConsultas DESC;
+-- Pergunta 7:
+-- Qual foi a capacidade de cada local utilizado no evento e quantas pessoas participaram em cada um?
+SELECT l.Nome, l.Capacidade, COUNT(i.ID_Participante) AS Participantes
+FROM Lugar l
+LEFT JOIN Evento e ON l.ID_Lugar = e.ID_Lugar
+LEFT JOIN Inscricao i ON e.ID_Evento = i.ID_Evento
+GROUP BY l.ID_Lugar;
 
+-- Pergunta 8:
+-- Quais foram os pedidos com maior frequência de consumo?
+SELECT i.ID_Item, i.Nome_Item, COUNT(*) AS Total_Vendas
+FROM Itens i
+JOIN Pedido p ON i.ID_Pedido = p.ID_Pedido
+GROUP BY i.ID_Item, i.Nome_Item
+ORDER BY Total_Vendas DESC;
 
--- Pergunta 7
-SELECT Lugar.ID_Lugar, Lugar.Nome, Lugar.Capacidade, COUNT(DISTINCT Participante.ID_Participante) AS TotalParticipantes
-FROM Lugar
-JOIN Evento ON Lugar.ID_Lugar = Evento.ID_Lugar
-JOIN Participante ON Evento.ID_Evento = Participante.ID_Evento
-GROUP BY Lugar.ID_Lugar, Lugar.Nome, Lugar.Capacidade;
+-- Pergunta 9:
+-- Qual foi o número total de itens servidos no restaurante, e quais foram os ingredientes mais utilizados?
+SELECT COUNT(*) AS Total_Itens_Servidos
+FROM Itens;
 
-
--- Pergunta 8
-SELECT Itens.ID_Item, COUNT(Itens.ID_Pedido) AS FrequenciaConsumo
+SELECT Ingredientes, COUNT(*) AS Total_Utilizados
 FROM Itens
-GROUP BY Itens.ID_Item
-ORDER BY FrequenciaConsumo DESC;
+GROUP BY Ingredientes
+ORDER BY Total_Utilizados DESC;
 
+-- Pergunta 10:
+-- Qual foi o número total de inscrições no evento e quantas foram realizadas por tipo de evento (seminários, palestras, consultas médicas)?
+SELECT COUNT(*) AS Total_Inscricoes
+FROM Inscricao;
 
--- Pergunta 9
-SELECT SUM(Itens.Quantidade) AS TotalItensServidos, Itens.Ingredientes, COUNT(Itens.ID_Item) AS FrequenciaIngrediente
-FROM Itens
-GROUP BY Itens.Ingredientes
-ORDER BY FrequenciaIngrediente DESC;
-
-
--- Pergunta 10
-SELECT Evento.tipo_evento, COUNT(Inscricao.ID_Inscricao) AS TotalInscricoes
-FROM Inscricao
-JOIN Evento ON Inscricao.ID_Evento = Evento.ID_Evento
-GROUP BY Evento.tipo_evento;
+SELECT e.Tipo_evento, COUNT(i.ID_Inscricao) AS Total_Inscricoes
+FROM Evento e
+LEFT JOIN Inscricao i ON e.ID_Evento = i.ID_Evento
+GROUP BY e.Tipo_evento;
