@@ -1,0 +1,10 @@
+1 - Qual o total arrecadado com as inscrições dos eventos realizados?
+2 - Quantas consultas foram realizadas por cada médico durante o evento?
+3 - Qual é o horário de maior movimento de pedidos no restaurante?
+4 - Quais funcionários trabalharam na recepção durante o evento e em quais turnos?
+5 - Quantas mesas foram ocupadas e reservadas ao longo do evento?
+6 - Quantos pacientes participaram do evento e quais especialidades médicas foram mais procuradas?
+7 - Qual foi a capacidade de cada local utilizado no evento e quantas pessoas participaram em cada um?
+8 - Quais foram os pedidos com maior frequência de consumo?
+9 - Qual foi o número total de itens servidos no restaurante, e quais foram os ingredientes mais utilizados?
+10 - Qual foi o número total de inscrições no evento e quantas foram realizadas por tipo de evento (seminários, palestras, consultas médicas)?
