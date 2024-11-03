@@ -8,9 +8,14 @@
   Inicialmente, foi reutilizada a modelagem do banco de dados utilizada no projeto 1. Adicionamos perguntas para agregar valor ao negócio e suas respectivas respostas, com os seus "select" no DQL.
   
   Além disso, implementamos duas funcionalidades adicionais que ajudam no monitoramento do programa da Prefeitura, e deixa nossa marca digital. Um deles é uma view, e outro, um trigger, ambos servem para que os responsáveis pelo evento possam ver relatorios de forma facilitada e acompanhar mais de perto, agilizando e facilitando o trabalho do programador de banco de dados.
-  
-Integrantes:
+
+<hr>
+
+### Integrantes:
 Guilherme Melo - Perguntas, impressão digital, DQL e importação do projeto 1 para o 2.
+
 Marina Cantarelli - Slides e impressão digital.
+
 Rennan Carneiro - DQL e implementação do banco de dados completo e funcionando em seu Notebook. 
+
 Vinicius Romariz - Slides e impressão digital.
