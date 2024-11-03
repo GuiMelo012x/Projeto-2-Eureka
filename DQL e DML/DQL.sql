@@ -49,10 +49,10 @@ GROUP BY l.ID_Lugar;
 
 -- Pergunta 8:
 -- Quais foram os pedidos com maior frequência de consumo?
-SELECT i.ID_Item, i.Nome_Item, COUNT(*) AS Total_Vendas
+SELECT i.ID_Item, COUNT(*) AS Total_Vendas
 FROM Itens i
 JOIN Pedido p ON i.ID_Pedido = p.ID_Pedido
-GROUP BY i.ID_Item, i.Nome_Item
+GROUP BY i.ID_Item
 ORDER BY Total_Vendas DESC;
 
 -- Pergunta 9:
