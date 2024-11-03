@@ -1,48 +1,43 @@
 -- Pergunta 1
-SELECT SUM(Inscricao.Valor) AS TotalArrecadado
-FROM Inscricao
-WHERE Inscricao.Status = 'Realizado';
+SELECT COUNT(*) AS Total_Inscricoes FROM Inscricao;
 
 -- Pergunta 2
-SELECT Medico.ID_Medico, Pessoa.Nome, COUNT(Consulta.ID_Consulta) AS TotalConsultas
-FROM Consulta
-JOIN Medico ON Consulta.ID_Medico = Medico.ID_Medico
-JOIN Pessoa ON Medico.ID_Pessoa = Pessoa.ID_Pessoa
-GROUP BY Medico.ID_Medico, Pessoa.Nome
-ORDER BY TotalConsultas DESC;
+SELECT P.Nome AS Nome_Medico, COUNT(C.ID_Consulta) AS Total_Consultas
+     FROM Medico M
+     JOIN Pessoa P ON M.ID_Pessoa = P.ID_Pessoa
+     LEFT JOIN Consulta C ON M.ID_Medico = C.ID_Medico 
+     GROUP BY P.Nome;
+
 
 
 -- Pergunta 3
-SELECT Pedido.Hora, COUNT(Pedido.ID_Pedido) AS TotalPedidos
+SELECT Hora, COUNT(*) AS Total_Pedidos
 FROM Pedido
-GROUP BY Pedido.Hora
-ORDER BY TotalPedidos DESC
-LIMIT 1;
+GROUP BY Hora
+ORDER BY Total_Pedidos DESC:
+
 
 
 -- Pergunta 4
-SELECT Funcionario.ID_Funcionario, Pessoa.Nome, Recepcao.Turno
-FROM Recepcao
-JOIN Funcionario ON Recepcao.ID_Funcionario = Funcionario.ID_Funcionario
-JOIN Pessoa ON Funcionario.ID_Pessoa = Pessoa.ID_Pessoa;
-
+SELECT P.Nome, R.Turno
+FROM Funcionario F
+JOIN Pessoa P ON F.ID_Pessoa = P.ID_Pessoa
+JOIN Recepcao R ON F.ID_Funcionario = R.ID_Funcionario;
 
 -- Pergunta 5
-SELECT Mesa.Status, COUNT(Mesa.ID_Mesa) AS QuantidadeMesas
+SELECT Status, COUNT(*) AS Total_Mesas
 FROM Mesa
-WHERE Mesa.Status IN ('Ocupada', 'Reservada')
-GROUP BY Mesa.Status;
-
+GROUP BY Status;
 
 -- Pergunta 6
-SELECT COUNT(DISTINCT Consulta.ID_Paciente) AS TotalPacientes, Medico.Especializacao, COUNT(Consulta.ID_Consulta) AS TotalConsultas
-FROM Consulta
-JOIN Medico ON Consulta.ID_Medico = Medico.ID_Medico
-GROUP BY Medico.Especializacao
-ORDER BY TotalConsultas DESC;
+SELECT COUNT(DISTINCT P.ID_Paciente) AS Total_Pacientes, M.Especialidade, COUNT(*) AS Total_Consultas
+FROM Paciente P
+JOIN Consulta C ON P.ID_Paciente = C.ID_Paciente
+JOIN Medico M ON C.ID_Medico = M.ID_Medico
+GROUP BY M.Especialidade;
 
 
--- Pergunta 7
+-- Pergunta 7 ESTÁ DANDO PROBLEMA
 SELECT Lugar.ID_Lugar, Lugar.Nome, Lugar.Capacidade, COUNT(DISTINCT Participante.ID_Participante) AS TotalParticipantes
 FROM Lugar
 JOIN Evento ON Lugar.ID_Lugar = Evento.ID_Lugar
@@ -51,21 +46,23 @@ GROUP BY Lugar.ID_Lugar, Lugar.Nome, Lugar.Capacidade;
 
 
 -- Pergunta 8
-SELECT Itens.ID_Item, COUNT(Itens.ID_Pedido) AS FrequenciaConsumo
-FROM Itens
-GROUP BY Itens.ID_Item
-ORDER BY FrequenciaConsumo DESC;
-
+SELECT I.Ingredientes, COUNT(*) AS Frequencia
+FROM Itens I
+JOIN Pedido P ON I.ID_Pedido = P.ID_Pedido
+GROUP BY I.Ingredientes
+ORDER BY Frequencia DESC
+LIMIT 5;  -- Para os 5 mais frequentes
 
 -- Pergunta 9
-SELECT SUM(Itens.Quantidade) AS TotalItensServidos, Itens.Ingredientes, COUNT(Itens.ID_Item) AS FrequenciaIngrediente
+-- total de itens:
+SELECT SUM(Quantidade) AS Total_Itens_Servidos FROM Itens;
+#ingredientes utilizados
+SELECT Ingredientes, SUM(Quantidade) AS Total_Quantidade
 FROM Itens
-GROUP BY Itens.Ingredientes
-ORDER BY FrequenciaIngrediente DESC;
-
+GROUP BY Ingredientes
+ORDER BY Total_Quantidade DESC;
 
 -- Pergunta 10
-SELECT Evento.tipo_evento, COUNT(Inscricao.ID_Inscricao) AS TotalInscricoes
-FROM Inscricao
-JOIN Evento ON Inscricao.ID_Evento = Evento.ID_Evento
-GROUP BY Evento.tipo_evento;
+-- total
+SELECT COUNT(*) AS Total_Inscricoes FROM Inscricao;
+ -- tipos está com erro
