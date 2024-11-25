@@ -8,6 +8,8 @@ class Pessoa(models.Model):
     email = models.EmailField()  # Email da pessoa
     telefone = models.CharField(max_length=15)  # Telefone de contato
     endereco = models.CharField(max_length=255)  # Endereço residencial
+    cep = models.CharField(max_length=8, blank=True, null=True)  # CEP (opcional)
+
 
     def __str__(self):
         return f"{self.nome} {self.sobrenome}"  # Representação legível no admin
@@ -154,4 +156,14 @@ class Reserva(models.Model):
 
     def __str__(self):
         return f"Reserva de {self.cliente} na Mesa {self.mesa}"
+#impressao digital, log que registra ações como criação, atualização e exclusão de registros.
+class LogAuditoria(models.Model):
+    # Campos básicos do log
+    acao = models.CharField(max_length=50)  # Exemplo: 'criação', 'atualização', 'exclusão'
+    objeto_id = models.PositiveIntegerField()  # ID do objeto que foi modificado
+    modelo = models.CharField(max_length=100)  # Nome do modelo relacionado
+    data_hora = models.DateTimeField(auto_now_add=True)  # Data/hora da ação
+    detalhes = models.TextField(blank=True, null=True)  # Detalhes adicionais (opcional)
 
+    def __str__(self):
+        return f"[{self.data_hora}] {self.acao} no modelo {self.modelo} (ID: {self.objeto_id})"
